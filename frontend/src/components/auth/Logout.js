@@ -9,16 +9,12 @@ const Logout = () => {
         try {
             // 백엔드에서 로그아웃 처리 (선택 사항)
             await api.post('/auth/logout');
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            navigate('/login');
         } catch (error) {
             console.error('Failed to logout', error);
         }
-
-        // 토큰 제거
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        
-        // 로그인 페이지로 리디렉션
-        navigate('/login');
     };
 
     return (

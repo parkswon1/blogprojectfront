@@ -37,13 +37,14 @@ api.interceptors.response.use(
                     },
                 });
 
-                const { accessToken } = response.data;
+                const { accessToken, refreshToken: newRefreshToken } = response.data;
                 localStorage.setItem('accessToken', accessToken);
+                localStorage.setItem('refreshToken', newRefreshToken); // 새로운 refresh token 저장
 
                 originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
                 return axios(originalRequest);
             } catch (err) {
-                console.error('Refresh token is invalid or expired');
+                console.error('Refresh token is invalid or expired', err.response.data);
                 // 로그아웃 처리
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('refreshToken');

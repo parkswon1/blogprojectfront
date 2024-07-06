@@ -15,11 +15,11 @@ const Login = () => {
             const response = await axios.post('http://localhost:8080/auth/login', { username: email, password });
             localStorage.setItem('accessToken', response.data.accessToken);
             localStorage.setItem('refreshToken', response.data.refreshToken);
-            navigate('/main');
+            navigate('/main'); // 로그인 성공 시 메인 페이지로 리디렉션
         } catch (error) {
             if (error.response) {
                 // 서버에서 온 에러 메시지
-                setError(error.response.data.message);
+                setError(error.response.data.error);
             } else {
                 // 기타 에러 메시지
                 setError('Failed to login. Please try again.');
