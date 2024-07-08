@@ -8,8 +8,10 @@ const updateUser = async (accessToken, requestData) => {
     });
 };
 
-const getUser = async (userId) => {
-    return axios.get(`${API_URL}/${userId}`);
+const getUser = async (accessToken, userId) => {
+    return axios.get(`${API_URL}/${userId}`, {
+        headers: { Authorization: `Bearer ${accessToken}` }
+    });
 };
 
 const updatePassword = async (accessToken, requestData) => {
@@ -29,8 +31,24 @@ const updateProfileImage = async (accessToken, imageFile) => {
     });
 };
 
-const getProfileImage = async (userId) => {
-    return axios.get(`${API_URL}/image/${userId}`);
+const getProfileImage = async (accessToken, userId) => {
+    return axios.get(`${API_URL}/image/${userId}`, {
+        headers: { Authorization: `Bearer ${accessToken}` }
+    });
 };
 
-export { updateUser, getUser, updatePassword, updateProfileImage, getProfileImage };
+const fetchProfileImage = async (accessToken, userId) => {
+    try {
+        const imageResponse = await getProfileImage(accessToken, userId);
+        const fullImageUrl = `http://localhost:8080${imageResponse.data}`;
+        const imgBlob = await axios.get(fullImageUrl, {
+            headers: { Authorization: `Bearer ${accessToken}` },
+            responseType: 'blob'
+        });
+        return URL.createObjectURL(imgBlob.data);
+    } catch (error) {
+        throw new Error(error.response?.data?.error || error.message);
+    }
+};
+
+export { updateUser, getUser, updatePassword, updateProfileImage, getProfileImage, fetchProfileImage };

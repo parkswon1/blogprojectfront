@@ -3,7 +3,10 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import AuthForm from './components/AuthForm';
 import MyPage from './pages/MyPage';
 import MainPage from './pages/MainPage';
+import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
 import { logout, refreshAccessToken } from './services/authService';
+import './styles/App.css';
 
 const App = () => {
     const [tokens, setTokens] = useState({
@@ -72,6 +75,7 @@ const App = () => {
     return (
         <Router>
             <div>
+                <Navbar isLoggedIn={!!tokens.accessToken} handleLogout={handleLogout} tokens={tokens} userId={userId} />
                 <Routes>
                     <Route
                         path="/"
@@ -79,19 +83,19 @@ const App = () => {
                     />
                     <Route
                         path="/main"
-                        element={tokens.accessToken ? (
-                            <MainPage handleLogout={handleLogout} handleRefresh={handleRefresh} />
-                        ) : (
-                            <Navigate to="/" />
-                        )}
+                        element={
+                            <ProtectedRoute tokens={tokens}>
+                                <MainPage handleLogout={handleLogout} handleRefresh={handleRefresh} />
+                            </ProtectedRoute>
+                        }
                     />
                     <Route
                         path="/mypage"
-                        element={tokens.accessToken ? (
-                            <MyPage tokens={tokens} userId={userId} handleLogout={handleLogout} handleRefresh={handleRefresh} />
-                        ) : (
-                            <Navigate to="/" />
-                        )}
+                        element={
+                            <ProtectedRoute tokens={tokens}>
+                                <MyPage tokens={tokens} userId={userId} handleLogout={handleLogout} handleRefresh={handleRefresh} />
+                            </ProtectedRoute>
+                        }
                     />
                 </Routes>
             </div>
