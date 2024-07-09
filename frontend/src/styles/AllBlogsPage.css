@@ -1,0 +1,28 @@
+.sort-options {
+    margin-bottom: 20px;
+}
+
+.blogs-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.blog-item {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+.blog-item h2 {
+    margin: 0 0 10px;
+}
+
+.blog-item p {
+    margin: 0 0 10px;
+}
+
+.blog-item small {
+    color: #777;
+}
