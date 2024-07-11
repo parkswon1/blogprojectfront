@@ -47,11 +47,12 @@ const Navbar = ({ isLoggedIn, handleLogout, tokens, userId }) => {
                 <Link to="/">MyBlog</Link>
             </div>
             <ul className="navbar-links">
-                <li><Link to="/blogs">Blogs</Link></li>
                 {isLoggedIn ? (
                     <>
                         <li><Link to="/main">Home</Link></li>
+                        <li><Link to="/blogs">Blogs</Link></li>
                         <li><Link to="/myblogs">My Blogs</Link></li>
+                        <li><Link to="/categories">Categories</Link></li>
                         <li className="profile-dropdown" ref={dropdownRef}>
                             <img
                                 src={profileImageUrl || defaultProfilePic}

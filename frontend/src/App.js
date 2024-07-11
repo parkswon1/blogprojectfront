@@ -7,6 +7,7 @@ import AllBlogsPage from './pages/AllBlogsPage';
 import MyBlogPage from './pages/MyBlogPage';
 import BlogDetailPage from './pages/BlogDetailPage';
 import BlogEditPage from './pages/BlogEditPage';
+import CategoryPage from './pages/CategoryPage';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import { logout, refreshAccessToken } from './services/authService';
@@ -122,6 +123,14 @@ const App = () => {
                         element={
                             <ProtectedRoute tokens={tokens}>
                                 <MyBlogPage tokens={tokens} userId={userId} />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/categories"
+                        element={
+                            <ProtectedRoute tokens={tokens}>
+                                <CategoryPage tokens={tokens} />
                             </ProtectedRoute>
                         }
                     />
