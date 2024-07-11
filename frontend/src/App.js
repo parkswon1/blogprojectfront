@@ -5,6 +5,10 @@ import MyPage from './pages/MyPage';
 import MainPage from './pages/MainPage';
 import AllBlogsPage from './pages/AllBlogsPage';
 import MyBlogPage from './pages/MyBlogPage';
+import MyPostsPage from './pages/MyPostsPage';
+import AllPostsPage from './pages/AllPostsPage';
+import PostDetailPage from './pages/PostDetailPage';
+import CreatePostPage from './pages/CreatePostPage';
 import BlogDetailPage from './pages/BlogDetailPage';
 import BlogEditPage from './pages/BlogEditPage';
 import CategoryPage from './pages/CategoryPage';
@@ -123,6 +127,30 @@ const App = () => {
                         element={
                             <ProtectedRoute tokens={tokens}>
                                 <MyBlogPage tokens={tokens} userId={userId} />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/myposts"
+                        element={
+                            <ProtectedRoute tokens={tokens}>
+                                <MyPostsPage tokens={tokens} userId={userId} />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/posts"
+                        element={<AllPostsPage tokens={tokens} />}
+                    />
+                    <Route
+                        path="/post/:postId"
+                        element={<PostDetailPage tokens={tokens} />}
+                    />
+                    <Route
+                        path="/create-post"
+                        element={
+                            <ProtectedRoute tokens={tokens}>
+                                <CreatePostPage tokens={tokens} userId={userId} />
                             </ProtectedRoute>
                         }
                     />
