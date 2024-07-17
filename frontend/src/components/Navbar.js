@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/Navbar.css';
 import { fetchProfileImage } from '../services/userService';
 import defaultProfilePic from '../assets/favicon.ico';
@@ -7,8 +7,9 @@ import defaultProfilePic from '../assets/favicon.ico';
 const Navbar = ({ isLoggedIn, handleLogout, tokens, userId }) => {
     const [profileImageUrl, setProfileImageUrl] = useState('');
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
     const dropdownRef = useRef(null);
-
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchImage = async () => {
             if (isLoggedIn) {
@@ -40,6 +41,11 @@ const Navbar = ({ isLoggedIn, handleLogout, tokens, userId }) => {
         };
     }, []);
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        navigate(`/search?query=${searchQuery}`);
+    };
+
     return (
         <nav className="navbar">
             <div className="navbar-logo">
@@ -70,6 +76,17 @@ const Navbar = ({ isLoggedIn, handleLogout, tokens, userId }) => {
                                     <button onClick={handleLogout}>Logout</button>
                                 </div>
                             )}
+                        </li>
+                        <li>
+                            <form onSubmit={handleSearch}>
+                                <input
+                                    type="text"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    placeholder="Search..."
+                                />
+                                <button type="submit">Search</button>
+                            </form>
                         </li>
                     </>
                 ) : (

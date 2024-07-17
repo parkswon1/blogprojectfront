@@ -1,0 +1,21 @@
+.search-results-page {
+    padding: 20px;
+}
+
+.results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.result-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    width: 300px;
+}
+
+.result-item img {
+    max-width: 100%;
+    height: auto;
+}

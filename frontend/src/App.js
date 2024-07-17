@@ -9,10 +9,11 @@ import MyPostsPage from './pages/MyPostsPage';
 import AllPostsPage from './pages/AllPostsPage';
 import PostDetailPage from './pages/PostDetailPage';
 import CreatePostPage from './pages/CreatePostPage';
-import BlogDetailPage from './pages/BlogDetailPage'; // Import 추가
+import BlogDetailPage from './pages/BlogDetailPage';
 import BlogEditPage from './pages/BlogEditPage';
 import CategoryPage from './pages/CategoryPage';
-import LikedItemsPage from './pages/LikedItemsPage'; // Import 추가
+import LikedItemsPage from './pages/LikedItemsPage';
+import SearchResultsPage from './pages/SearchResultsPage'; // 검색 결과 페이지 추가
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import { logout, refreshAccessToken } from './services/authService';
@@ -113,7 +114,7 @@ const App = () => {
                     />
                     <Route
                         path="/blog/:blogId"
-                        element={<BlogDetailPage tokens={tokens} userId={userId} />} // userId 추가
+                        element={<BlogDetailPage tokens={tokens} userId={userId} />}
                     />
                     <Route
                         path="/blog/edit/:blogId"
@@ -145,7 +146,7 @@ const App = () => {
                     />
                     <Route
                         path="/post/:postId"
-                        element={<PostDetailPage tokens={tokens} userId={userId} />} // userId 추가
+                        element={<PostDetailPage tokens={tokens} userId={userId} />}
                     />
                     <Route
                         path="/create-post"
@@ -164,10 +165,18 @@ const App = () => {
                         }
                     />
                     <Route
-                        path="/liked-items" // 새로운 경로 추가
+                        path="/liked-items"
                         element={
                             <ProtectedRoute tokens={tokens}>
                                 <LikedItemsPage tokens={tokens} userId={userId} />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/search"
+                        element={
+                            <ProtectedRoute tokens={tokens}>
+                                <SearchResultsPage tokens={tokens} />
                             </ProtectedRoute>
                         }
                     />
