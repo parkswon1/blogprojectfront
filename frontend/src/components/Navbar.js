@@ -53,6 +53,7 @@ const Navbar = ({ isLoggedIn, handleLogout, tokens, userId }) => {
                         <li><Link to="/blogs">Blogs</Link></li>
                         <li><Link to="/posts">Posts</Link></li>
                         <li><Link to="/categories">Categories</Link></li>
+                        <li><Link to="/liked-items">Liked Items</Link></li>
                         <li className="profile-dropdown" ref={dropdownRef}>
                             <img
                                 src={profileImageUrl || defaultProfilePic}
@@ -64,6 +65,7 @@ const Navbar = ({ isLoggedIn, handleLogout, tokens, userId }) => {
                                 <div className="dropdown-menu">
                                     <Link to="/mypage">My Page</Link>
                                     <li><Link to="/myposts">My Posts</Link></li>
+                                    <li><Link to="/create-post">Create Posts</Link></li>
                                     <li><Link to="/myblogs">My Blogs</Link></li>
                                     <button onClick={handleLogout}>Logout</button>
                                 </div>
