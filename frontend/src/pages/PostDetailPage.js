@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPostById } from '../services/postService';
+import { fetchImage } from '../services/imageService';
 import { getCommentsByPostId, createComment, deleteComment } from '../services/commentService'; // 댓글 서비스 추가
 import defaultImage from '../assets/logo192.png';
 
@@ -9,12 +10,17 @@ const PostDetailPage = ({ tokens, userId }) => {
     const [post, setPost] = useState(null);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
+    const [imageUrl, setImageUrl] = useState(null);
 
     useEffect(() => {
         const fetchPost = async () => {
             try {
                 const response = await getPostById(tokens.accessToken, postId);
                 setPost(response.data);
+                if (response.data.image && response.data.image.url) {
+                    const url = await fetchImage(tokens.accessToken, response.data.image.url); // 이미지 URL 설정
+                    setImageUrl(url);
+                }
             } catch (error) {
                 console.error(error.response?.data?.error || error.message);
             }
@@ -60,7 +66,7 @@ const PostDetailPage = ({ tokens, userId }) => {
     return (
         <div>
             <h2>{post.title}</h2>
-            <img src={post.image ? `http://localhost:8080${post.image.url}` : defaultImage} alt={post.title} />
+            <img src={imageUrl || defaultImage} alt={post.title} />
             <p>{post.content}</p>
             <p>Views: {post.views}</p>
             <p>Category: {post.category.name}</p>
