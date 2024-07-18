@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getAllCategories } from '../services/categoryService';
 import { createPost } from '../services/postService';
+import '../styles/CreatePostPage.css';
 
 const CreatePostPage = ({ tokens, userId }) => {
     const [title, setTitle] = useState('');
@@ -45,39 +46,58 @@ const CreatePostPage = ({ tokens, userId }) => {
     };
 
     return (
-        <div>
+        <div className="create-post-page">
             <h1>Create Post</h1>
-            <form onSubmit={handleCreatePost}>
+            <form onSubmit={handleCreatePost} className="create-post-form">
+                <label htmlFor="title" className="form-label">Title</label>
                 <input
                     type="text"
+                    id="title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="Title"
                     required
+                    className="form-input"
                 />
+                <label htmlFor="content" className="form-label">Content</label>
                 <textarea
+                    id="content"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     placeholder="Content"
                     required
+                    className="form-textarea"
                 />
-                <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+                <label htmlFor="category" className="form-label">Category</label>
+                <select
+                    id="category"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    required
+                    className="form-select"
+                >
                     <option value="">Select Category</option>
                     {categories.map((cat) => (
                         <option key={cat.id} value={cat.id}>{cat.name}</option>
                     ))}
                 </select>
+                <label htmlFor="tags" className="form-label">Tags</label>
                 <input
                     type="text"
+                    id="tags"
                     value={tags}
                     onChange={(e) => setTags(e.target.value)}
                     placeholder="Tags (comma separated)"
+                    className="form-input"
                 />
+                <label htmlFor="image" className="form-label">Image</label>
                 <input
                     type="file"
+                    id="image"
                     onChange={(e) => setImage(e.target.files[0])}
+                    className="form-file-input"
                 />
-                <button type="submit">Create Post</button>
+                <button type="submit" className="form-button">Create Post</button>
             </form>
         </div>
     );
