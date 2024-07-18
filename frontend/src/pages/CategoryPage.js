@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createCategory, getAllCategories, deleteCategory } from '../services/categoryService';
+import '../styles/CategoryPage.css';
 
 const CategoryPage = ({ tokens }) => {
     const [name, setName] = useState('');
@@ -44,8 +45,12 @@ const CategoryPage = ({ tokens }) => {
     const renderCategoryTree = (categories) => {
         return categories.map((category) => (
             <li key={category.id}>
-                {category.name} (ID: {category.id})
-                <button onClick={() => handleDeleteCategory(category.id)}>Delete</button>
+                <div className="category-item">
+                    <span>
+                        {category.name} (ID: {category.id})
+                    </span>
+                    <button onClick={() => handleDeleteCategory(category.id)}>Delete</button>
+                </div>
                 {category.subCategories && category.subCategories.length > 0 && (
                     <ul>
                         {renderCategoryTree(category.subCategories)}
@@ -56,9 +61,9 @@ const CategoryPage = ({ tokens }) => {
     };
 
     return (
-        <div>
+        <div className="category-page">
             <h2>Create Category</h2>
-            <form onSubmit={handleCreateCategory}>
+            <form onSubmit={handleCreateCategory} className="category-form">
                 <input
                     type="text"
                     placeholder="Category Name"
@@ -78,7 +83,7 @@ const CategoryPage = ({ tokens }) => {
             </form>
 
             <h2>All Categories</h2>
-            <ul>
+            <ul className="category-tree">
                 {renderCategoryTree(categories)}
             </ul>
         </div>
