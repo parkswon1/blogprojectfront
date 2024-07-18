@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getUser, updateUser, updatePassword, updateProfileImage, fetchProfileImage } from '../services/userService';
+import '../styles/UserProfile.css'; // 추가된 CSS 파일
 
 const UserProfile = ({ tokens, userId }) => {
     const [newName, setNewName] = useState('');
@@ -65,43 +66,47 @@ const UserProfile = ({ tokens, userId }) => {
     };
 
     return (
-        <div>
+        <div className="user-profile-container">
             <h2>Update User Information</h2>
-            {profileImageUrl && <img src={profileImageUrl} alt="Profile" style={{ width: '150px', height: '150px' }} />}
-            <form onSubmit={handleUpdateUser}>
+            {profileImageUrl && <img src={profileImageUrl} alt="Profile" className="profile-image" />}
+            <form onSubmit={handleUpdateUser} className="user-form">
                 <input 
                     type="text" 
                     placeholder="Name" 
                     value={newName} 
                     onChange={(e) => setNewName(e.target.value)} 
+                    className="form-input"
                 />
-                <button type="submit">Update Name</button>
+                <button type="submit" className="form-button">Update Name</button>
             </form>
 
             <h2>Change Password</h2>
-            <form onSubmit={handleChangePassword}>
+            <form onSubmit={handleChangePassword} className="user-form">
                 <input 
                     type="password" 
                     placeholder="New Password" 
                     value={newPassword} 
                     onChange={(e) => setNewPassword(e.target.value)} 
+                    className="form-input"
                 />
                 <input 
                     type="password" 
                     placeholder="Check Password" 
                     value={checkPassword} 
                     onChange={(e) => setCheckPassword(e.target.value)} 
+                    className="form-input"
                 />
-                <button type="submit">Change Password</button>
+                <button type="submit" className="form-button">Change Password</button>
             </form>
 
             <h2>Update Profile Image</h2>
-            <form onSubmit={handleUpdateProfileImage}>
+            <form onSubmit={handleUpdateProfileImage} className="user-form">
                 <input 
                     type="file" 
                     onChange={handleFileChange} 
+                    className="form-input"
                 />
-                <button type="submit">Update Profile Image</button>
+                <button type="submit" className="form-button">Update Profile Image</button>
             </form>
         </div>
     );
