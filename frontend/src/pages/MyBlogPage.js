@@ -4,7 +4,6 @@ import { getBlogsByUserId, saveBlog } from '../services/blogService';
 import '../styles/MyBlogPage.css';
 
 const MyBlogPage = ({ tokens, userId }) => {
-    const [blogs, setBlogs] = useState([]);
     const [title, setTitle] = useState('');
     const [text, setText] = useState('');
     const [file, setFile] = useState(null);
@@ -15,14 +14,15 @@ const MyBlogPage = ({ tokens, userId }) => {
             try {
                 const response = await getBlogsByUserId(tokens.accessToken, userId);
                 const blogsData = Array.isArray(response.data) ? response.data : [response.data];
-                setBlogs(blogsData);
-                console.log(blogsData); // 블로그 데이터 확인
+                if (blogsData.length > 0) {
+                    navigate(`/blog/edit/${blogsData[0].id}`);
+                }
             } catch (error) {
                 console.error(error.message);
             }
         };
         fetchUserBlogs();
-    }, [tokens.accessToken, userId]); // 의존성 배열 확인
+    }, [tokens.accessToken, userId, navigate]); // navigate 추가
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -36,42 +36,26 @@ const MyBlogPage = ({ tokens, userId }) => {
     };
 
     return (
-        <div>
-            <h1>My Blogs</h1>
-            {blogs.length > 0 ? (
-                <div className="blogs-list">
-                    {blogs.map(blog => (
-                        <div key={blog.id} className="blog-item">
-                            <h2>{blog.title}</h2>
-                            <p>{blog.description}</p>
-                            <button onClick={() => navigate(`/blog/edit/${blog.id}`)}>Edit</button>
-                        </div>
-                    ))}
-                </div>
-            ) : (
-                <>
-                    <p>You have no blogs. Create one below.</p>
-                    <h2>Create New Blog</h2>
-                    <form onSubmit={handleSubmit}>
-                        <input 
-                            type="text" 
-                            placeholder="Title" 
-                            value={title} 
-                            onChange={(e) => setTitle(e.target.value)} 
-                        />
-                        <textarea 
-                            placeholder="Text" 
-                            value={text} 
-                            onChange={(e) => setText(e.target.value)} 
-                        ></textarea>
-                        <input 
-                            type="file" 
-                            onChange={(e) => setFile(e.target.files[0])} 
-                        />
-                        <button type="submit">Save Blog</button>
-                    </form>
-                </>
-            )}
+        <div className="my-blog-page">
+            <h1>Create New Blog</h1>
+            <form onSubmit={handleSubmit} className="create-blog-form">
+                <input 
+                    type="text" 
+                    placeholder="Title" 
+                    value={title} 
+                    onChange={(e) => setTitle(e.target.value)} 
+                />
+                <textarea 
+                    placeholder="Text" 
+                    value={text} 
+                    onChange={(e) => setText(e.target.value)} 
+                ></textarea>
+                <input 
+                    type="file" 
+                    onChange={(e) => setFile(e.target.files[0])} 
+                />
+                <button type="submit">Save Blog</button>
+            </form>
         </div>
     );
 };
