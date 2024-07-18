@@ -73,7 +73,7 @@ button {
     position: absolute;
     right: 0;
     top: 50px;
-    background-color: white;
+    background-color: rgba(0, 0, 0, 0.2);
     color: black;
     border: 1px solid #ccc;
     border-radius: 4px;

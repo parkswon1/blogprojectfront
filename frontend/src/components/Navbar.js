@@ -68,7 +68,7 @@ const Navbar = ({ isLoggedIn, handleLogout, tokens, userId }) => {
                             />
                             {dropdownOpen && (
                                 <div className="dropdown-menu">
-                                    <Link to="/mypage">My Page</Link>
+                                    <li><Link to="/mypage">My Page</Link></li>
                                     <li><Link to="/myposts">My Posts</Link></li>
                                     <li><Link to="/create-post">Create Posts</Link></li>
                                     <li><Link to="/liked-items">Liked Items</Link></li>

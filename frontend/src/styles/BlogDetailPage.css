@@ -1,64 +1,79 @@
-/* BlogEditPage.css */
-
-.blog-edit-page {
-    padding: 20px;
+.blog-detail-page {
     max-width: 800px;
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.blog-edit-page h1 {
-    margin-bottom: 20px;
-}
-
-.blog-edit-page form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.form-label {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.blog-edit-title, .blog-edit-text, .blog-edit-file-input, .blog-edit-submit {
-    width: 100%;
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-}
-
-.blog-edit-text {
-    height: 150px;
-    resize: vertical;
-}
-
-.blog-edit-image-preview {
-    display: flex;
-    justify-content: center;
+.blog-detail-page h1 {
+    font-size: 2em;
     margin-bottom: 10px;
 }
 
-.preview-image {
+.blog-detail-page p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.blog-image {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
 }
 
-.blog-edit-submit {
+.like-button {
+    margin-bottom: 20px;
+}
+
+.like-button button {
+    padding: 10px 20px;
     background-color: #007bff;
     color: white;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    border: none;
 }
 
-.blog-edit-submit:hover {
+.like-button button:hover {
     background-color: #0056b3;
+}
+
+.posts-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.post-item {
+    margin-bottom: 15px;
+}
+
+.post-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.post-link:hover {
+    background-color: #f1f1f1;
+    border-color: #d0d0d0;
+}
+
+.post-link span {
+    font-size: 1em;
+}
+
+.post-link small {
+    font-size: 0.9em;
+    color: #666;
 }
