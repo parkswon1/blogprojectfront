@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { getBlogsList } from '../services/blogService';
+import { fetchImage } from '../services/imageService';
 import '../styles/AllBlogsPage.css';
+import defaultImage from '../assets/logo192.png';
 
 const AllBlogsPage = ({ tokens }) => {
     const [blogs, setBlogs] = useState([]);
@@ -12,17 +14,42 @@ const AllBlogsPage = ({ tokens }) => {
     useEffect(() => {
         const fetchBlogs = async () => {
             try {
-                const response = await getBlogsList(tokens.accessToken, page, size, sortOrder);
-                setBlogs(response.data.content);
+                const response = await getBlogsList(tokens.accessToken, page, size);
+                const blogsWithImages = await Promise.all(
+                    response.data.content.map(async blog => {
+                        if (blog.image) {
+                            const imageUrl = await fetchImage(tokens.accessToken, blog.image.url);
+                            return { ...blog, imageUrl };
+                        }
+                        return { ...blog, imageUrl: defaultImage };
+                    })
+                );
+                setBlogs(blogsWithImages);
             } catch (error) {
                 console.error(error.message);
             }
         };
         fetchBlogs();
-    }, [tokens.accessToken, page, size, sortOrder]);
+    }, [tokens.accessToken, page, size]);
+
+    const sortedBlogs = useMemo(() => {
+        const sorted = [...blogs];
+        sorted.sort((a, b) => {
+            if (sortOrder === 'title') {
+                return a.title.localeCompare(b.title);
+            } else if (sortOrder === 'views') {
+                return b.views - a.views;
+            } else if (sortOrder === 'updatedAt') {
+                return new Date(b.updatedAt) - new Date(a.updatedAt);
+            } else {
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            }
+        });
+        return sorted;
+    }, [blogs, sortOrder]);
 
     return (
-        <div>
+        <div className="all-blogs-page">
             <h1>All Blogs</h1>
             <div className="sort-options">
                 <label>Sort By: </label>
@@ -34,12 +61,16 @@ const AllBlogsPage = ({ tokens }) => {
                 </select>
             </div>
             <div className="blogs-list">
-                {blogs.map(blog => (
+                {sortedBlogs.map(blog => (
                     <div key={blog.id} className="blog-item">
                         <Link to={`/blog/${blog.id}`}>
+                            <img 
+                                src={blog.imageUrl} 
+                                alt={blog.title} 
+                            />
                             <h2>{blog.title}</h2>
                         </Link>
-                        <p>{blog.text}</p>
+                        <p>{blog.description}</p>
                         <small>Views: {blog.views}</small>
                     </div>
                 ))}
