@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { createPost } from '../services/postService';
 import { getAllCategories } from '../services/categoryService';
+import { createPost } from '../services/postService';
 
 const CreatePostPage = ({ tokens, userId }) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [categoryId, setCategoryId] = useState('');
+    const [category, setCategory] = useState('');
     const [tags, setTags] = useState('');
+    const [image, setImage] = useState(null);
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
@@ -15,58 +16,66 @@ const CreatePostPage = ({ tokens, userId }) => {
                 const response = await getAllCategories(tokens.accessToken);
                 setCategories(response.data);
             } catch (error) {
-                console.error(error.response?.data?.error || error.message);
+                console.error(error.message);
             }
         };
+
         fetchCategories();
     }, [tokens.accessToken]);
 
     const handleCreatePost = async (e) => {
         e.preventDefault();
-        const postRequest = {
-            title,
-            content,
-            categoryId,
-            tags: tags.split(',').map(tag => tag.trim())
-        };
+
+        const postData = new FormData();
+        postData.append('title', title);
+        postData.append('content', content);
+        postData.append('categoryId', category);
+        tags.split(',').forEach(tag => postData.append('tagNames', tag.trim())); // 각 태그를 개별적으로 추가
+        if (image) {
+            postData.append('imageFile', image);
+        }
+
         try {
-            await createPost(tokens.accessToken, userId, postRequest);
-            alert('Post created successfully!');
+            await createPost(tokens.accessToken, userId, postData);
+            alert('Post created successfully');
         } catch (error) {
-            alert(error.response?.data?.error || error.message);
+            console.error(error.response?.data || error.message);
+            alert('Failed to create post');
         }
     };
 
     return (
         <div>
-            <h2>Create New Post</h2>
+            <h1>Create Post</h1>
             <form onSubmit={handleCreatePost}>
                 <input
                     type="text"
-                    placeholder="Title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Title"
                     required
                 />
                 <textarea
-                    placeholder="Content"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
+                    placeholder="Content"
                     required
                 />
-                <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
+                <select value={category} onChange={(e) => setCategory(e.target.value)} required>
                     <option value="">Select Category</option>
-                    {categories.map((category) => (
-                        <option key={category.id} value={category.id}>
-                            {category.name}
-                        </option>
+                    {categories.map((cat) => (
+                        <option key={cat.id} value={cat.id}>{cat.name}</option>
                     ))}
                 </select>
                 <input
                     type="text"
-                    placeholder="Tags (comma separated)"
                     value={tags}
                     onChange={(e) => setTags(e.target.value)}
+                    placeholder="Tags (comma separated)"
+                />
+                <input
+                    type="file"
+                    onChange={(e) => setImage(e.target.files[0])}
                 />
                 <button type="submit">Create Post</button>
             </form>

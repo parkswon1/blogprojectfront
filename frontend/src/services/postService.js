@@ -2,9 +2,11 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8080/posts';
 
-const createPost = async (accessToken, userId, postRequest) => {
-    return axios.post(`${API_URL}/${userId}`, postRequest, {
-        headers: { Authorization: `Bearer ${accessToken}` }
+const createPost = async (accessToken, userId, postData) => {
+    return axios.post(`${API_URL}/${userId}`, postData, {
+        headers: { 
+            Authorization: `Bearer ${accessToken}`
+        }
     });
 };
 
